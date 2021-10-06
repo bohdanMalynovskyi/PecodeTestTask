@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CreateDeleteFragmentButton">
+        <attr name="type">
+            <enum name="create" value="0" />
+            <enum name="delete" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

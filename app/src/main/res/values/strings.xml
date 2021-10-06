@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PecodeTestTask</string>
+    <string name="create_new_notification">Create new notification</string>
+</resources>
