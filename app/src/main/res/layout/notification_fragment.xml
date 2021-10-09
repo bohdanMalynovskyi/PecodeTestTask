@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="@+id/createNotificationButton" />
 
     <TextView
-        android:id="@+id/pageNumberView"
+        android:id="@+id/pageNumberTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
@@ -52,11 +52,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/pageNumberView"
+        app:layout_constraintBottom_toBottomOf="@id/pageNumberTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pageNumberView"
+        app:layout_constraintTop_toTopOf="@id/pageNumberTextView"
         app:type="create" />
 
     <com.example.pecodetesttask.CreateDeleteFragmentButton
@@ -64,11 +64,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/pageNumberView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/pageNumberTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/pageNumberView"
+        app:layout_constraintTop_toTopOf="@id/pageNumberTextView"
         app:type="delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
