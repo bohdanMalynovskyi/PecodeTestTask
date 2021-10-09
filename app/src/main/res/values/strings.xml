@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">PecodeTestTask</string>
     <string name="create_new_notification">Create new notification</string>
+    <string name="basic_notification_channel">Basic notification channel</string>
+    <string name="chat_heads_active">Chat heads active</string>
+    <string name="notification_text_placeholder">Notification %d</string>
 </resources>

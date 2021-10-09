@@ -18,8 +18,8 @@ class NotificationFragmentStateAdapter(fragmentActivity: FragmentActivity) :
     }
 
     fun addFragment(notificationFragmentInterface: NotificationFragmentInterface) {
-        val newFragmentPosition = fragmentList.size + 1
-        fragmentList.add(NotificationFragment(newFragmentPosition, notificationFragmentInterface))
+        val newFragmentIndex = fragmentList.lastIndex + 1
+        fragmentList.add(NotificationFragment(newFragmentIndex, notificationFragmentInterface))
         notifyDataSetChanged()
     }
 

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.notification_fragment.*
 
 class NotificationFragment(
-    private val position: Int,
+    private val index: Int,
     private val notificationFragmentInterface: NotificationFragmentInterface
 ) : Fragment() {
 
@@ -26,13 +26,18 @@ class NotificationFragment(
     }
 
     private fun setupViews() {
-        pageNumberTextView.text = position.toString()
+        pageNumberTextView.text = (index + 1).toString()
         createFragmentButton.setOnClickListener { notificationFragmentInterface.addFragment() }
-        if (position > 1) {
+        if (index > 0) {
             deleteFragmentButton.apply {
                 visibility = View.VISIBLE
                 setOnClickListener { notificationFragmentInterface.deleteFragment() }
             }
+        }
+        createNotificationButton.setOnClickListener {
+            notificationFragmentInterface.createNotification(
+                index
+            )
         }
     }
 }

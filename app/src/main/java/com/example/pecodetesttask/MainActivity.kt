@@ -12,14 +12,20 @@ import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), NotificationFragmentInterface {
-    //todo manage packages
 
     private lateinit var viewPagerAdapter: NotificationFragmentStateAdapter
+    private var notificationsMap = HashMap<Int, Int>()
+
+    companion object {
+        const val KEY_FRAGMENT_INDEX = "KEY_FRAGMENT_INDEX"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.hide()
 
+        NotificationUtils.createNotificationChannel(this)
         setupViewPager()
         addSavedFragments()
     }
@@ -27,16 +33,21 @@ class MainActivity : AppCompatActivity(), NotificationFragmentInterface {
     private fun addSavedFragments() {
         val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         coroutineScope.launch {
-            //todo test correct using flow
             val fragmentCount =
                 PecodeTestTaskPreferences(this@MainActivity).getFragmentCount().first()
-            //todo is runOnUiThread okay???
             runOnUiThread {
                 repeat(fragmentCount) {
-                    addFragment()
+                    viewPagerAdapter.addFragment(this@MainActivity)
                 }
+                setInitialFragment()
             }
         }
+    }
+
+    private fun setInitialFragment() {
+        val defaultFragmentIndex = 0
+        val initialFragmentIndex = intent.getIntExtra(KEY_FRAGMENT_INDEX, defaultFragmentIndex)
+        viewPager.currentItem = initialFragmentIndex
     }
 
     private fun setupViewPager() {
@@ -62,17 +73,31 @@ class MainActivity : AppCompatActivity(), NotificationFragmentInterface {
 
     override fun deleteFragment() {
         viewPagerAdapter.apply {
-            if (currentPosition == fragmentList.lastIndex) {
-                viewPager.currentItem = fragmentList.lastIndex - 1
+            val deletedFragmentIndex = fragmentList.lastIndex
+            if (currentPosition == deletedFragmentIndex) {
+                viewPager.currentItem = deletedFragmentIndex - 1
             }
             deleteFragment()
-            //todo delete fragment notifications too
+            deleteFragmentNotifications(deletedFragmentIndex)
         }
         saveFragmentCountToPref()
     }
 
+    private fun deleteFragmentNotifications(fragmentIndex: Int) {
+        notificationsMap.forEach { mapEntry ->
+            if (mapEntry.value == fragmentIndex) {
+                NotificationUtils.deleteNotification(this, mapEntry.key)
+            }
+        }
+    }
+
+    override fun createNotification(fragmentIndex: Int) {
+        val notificationId = notificationsMap.size
+        NotificationUtils.showNotification(this, fragmentIndex, notificationId)
+        notificationsMap[notificationId] = fragmentIndex
+    }
+
     private fun saveFragmentCountToPref() {
-        //todo may be possible observe when data is changed and save it
         val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         coroutineScope.launch {
             PecodeTestTaskPreferences(this@MainActivity).saveFragmentCount(viewPagerAdapter.fragmentList.size)
