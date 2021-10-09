@@ -4,11 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), NotificationFragmentInterface {
@@ -35,7 +32,7 @@ class MainActivity : AppCompatActivity(), NotificationFragmentInterface {
         coroutineScope.launch {
             val fragmentCount =
                 PecodeTestTaskPreferences(this@MainActivity).getFragmentCount().first()
-            runOnUiThread {
+            withContext(Dispatchers.Main) {
                 repeat(fragmentCount) {
                     viewPagerAdapter.addFragment(this@MainActivity)
                 }
