@@ -33,7 +33,7 @@ class NotificationUtils {
                 context,
                 fragmentIndex,
                 intent,
-                0
+                PendingIntent.FLAG_UPDATE_CURRENT
             )
 
             val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)

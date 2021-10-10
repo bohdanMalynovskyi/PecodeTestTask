@@ -30,21 +30,19 @@ class MainActivity : AppCompatActivity(), NotificationFragmentInterface {
     private fun addSavedFragments() {
         val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         coroutineScope.launch {
-            val fragmentCount =
-                PecodeTestTaskPreferences(this@MainActivity).getFragmentCount().first()
+            var fragmentCount =
+                    PecodeTestTaskPreferences(this@MainActivity).getFragmentCount().first()
             withContext(Dispatchers.Main) {
+                val initialFragmentIndex = intent.getIntExtra(KEY_FRAGMENT_INDEX, -1)
+                if (initialFragmentIndex != -1) {
+                    fragmentCount = initialFragmentIndex + 1
+                }
                 repeat(fragmentCount) {
                     viewPagerAdapter.addFragment(this@MainActivity)
                 }
-                setInitialFragment()
+                viewPager.currentItem = if (initialFragmentIndex != -1) initialFragmentIndex else 0
             }
         }
-    }
-
-    private fun setInitialFragment() {
-        val defaultFragmentIndex = 0
-        val initialFragmentIndex = intent.getIntExtra(KEY_FRAGMENT_INDEX, defaultFragmentIndex)
-        viewPager.currentItem = initialFragmentIndex
     }
 
     private fun setupViewPager() {
